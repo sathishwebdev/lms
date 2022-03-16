@@ -22,6 +22,7 @@ ReactDOM.render(
         display:"flex",
         alignItems:"center",
         justifyContent:"center",
+        zIndex:"2"
       }}>
         <p>Developed by <a href="https://sathishwebdev.netlify.app" target="_blank" rel="noreferrer"> Sathish Kumar S</a>
       </p></div>

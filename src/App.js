@@ -11,6 +11,8 @@ import SignUp from './views/SignUp';
 import Verification from './components/verification';
 import ForgetPassword from './views/forgetPassword';
 import ChangePassword from './views/changePassword';
+import Dashboard from './views/dashboard';
+import AddLoan from './views/addLoan';
 
 
 function App(props) {
@@ -21,25 +23,27 @@ function App(props) {
    <>
    
     <BrowserRouter>   
-    <div className="d-none d-sm-block" >
-    
+    {/* <div className="" >
       <NavBar />
-    
-  </div>
-  <div className="d-block d-sm-none" >
-    <CollapesNav/>
-  </div>
-      <Routes>
-        <Route exact path="/" element={<Home {...props} />}/>
-        <Route exact path="/user/login" element ={<Login />} />
-        <Route exact path="/user/signup" element ={<SignUp />} />
-        <Route exact path="/user/verify" element={<Verify mailId={user_login ? user_login.email : ''} {...props} />}/>
-        <Route exact path='/:id/verify/k' element={<Verification />} /> 
-        <Route exact path ="/user/forgetpassword" element={<ForgetPassword />} />
-        <Route exact path = "/:userId/changepassword/k" element={<ChangePassword/>} />
-      
-        <Route path="*" element={<div className="header" style={{minHeight:"100vh", borderRadius:"0 0 0 70vw", color:"white"}}><h1>404</h1></div>}/>
-      </Routes>
+  </div> */}
+  <div className="d-flex" >
+    <div className='relative-sm-left'><CollapesNav/></div>
+  
+      <div style={{width:"100%"}}>
+        <Routes>
+          <Route exact path="/" element={<Home {...props} />}/>
+          <Route exact path="/user/dashboard" element ={<Dashboard />} />
+          <Route exact path="/user/add/loan" element ={<AddLoan />} />
+          <Route exact path="/user/login" element ={<Login />} />
+          <Route exact path="/user/signup" element ={<SignUp />} />
+          <Route exact path="/user/verify" element={<Verify mailId={user_login ? user_login.email : ''} {...props} />}/>
+          <Route exact path='/:id/verify/k' element={<Verification />} />
+          <Route exact path ="/user/forgetpassword" element={<ForgetPassword />} />
+          <Route exact path = "/:userId/changepassword/k" element={<ChangePassword/>} />
+        
+          <Route path="*" element={<div className="header" style={{minHeight:"100vh", borderRadius:"0 0 0 70vw", color:"white"}}><h1>404</h1></div>}/>
+        </Routes>
+      </div></div>
     </BrowserRouter></>
   );
 }

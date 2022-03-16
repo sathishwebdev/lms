@@ -8,7 +8,7 @@ const Button = mui.styled(mui.Button)(({ theme }) => ({
   
     "&:hover": {
       backgroundColor: "",
-      color: "white",
+      color: "black",
       textShadow: "0px 0px 20px 1px #0f0f0f",
     },
     "&:focus": {
@@ -42,7 +42,10 @@ const Button = mui.styled(mui.Button)(({ theme }) => ({
   backgroundColor: "#000",
   fontFamily: "advent",
   padding:"2%",
+  paddingLeft:"15px",
+  paddingRight:"15px",
   margin: "3%",
+  borderRadius:"50px",
   '&:hover': {
     backgroundColor: "white",
     color:"black",

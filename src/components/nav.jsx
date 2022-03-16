@@ -24,18 +24,6 @@ const NavBar = () =>{
        <Link to="/" style={{color:"#ffd500", textDecoration:"none"}} > <h1 style={{marginLeft:"10px", marginTop:"10px"}} >LMS</h1></Link>
     </div>
     <div className="d-flex align-items-center"  >
-    {NavModel.map(({name,path}, id)=>(
-       <Link
-       key={id}
-       style={{
-         margin:'1%'
-       }}
-        to={path}
-        className="btn btn-link"
-       >
-        {name}
-        </Link>
-     )) }
   { !user_login 
     ? <> {location.pathname === "/user/login" 
         ? "" 
@@ -66,7 +54,8 @@ const NavBar = () =>{
           </PrimaryButton>}
       </>
           
-        :<div style={{marginRight:"20px"}}>
+        :<div className="d-flex align-items-center" style={{marginRight:"20px"}}>
+          <p style={{marginTop:"15px"}} >{user_login.name}</p>
         <AccountMenu name = {user_login.name[0]} title={user_login.name} />
         </div>}
     </div>
@@ -86,12 +75,15 @@ const NavBar = () =>{
     );
   
     const CloseMenu = () =>{
-      document.getElementById('c-nav').style.transform = 'translateY(-100vh)'
+      
+      document.getElementById('c-nav').style.transform = 'translateX(-100vw)'
+      document.getElementById('c-nav').style.display = "none"
       setNavStatus(false)
     }
   
     const OpenMenu = () =>{
-      document.getElementById('c-nav').style.transform = 'translateY(0vh)'
+      document.getElementById('c-nav').style.display = "flex"
+      document.getElementById('c-nav').style.transform = 'translateX(0)'
       setNavStatus(true)
     }
   
@@ -102,9 +94,10 @@ const NavBar = () =>{
       >
         {!navStatus ? <><Menu fontSize= "large"/>  </> :<Close sx={{color:'gray'}} fontSize='large' />}
       </IconButton>
-      <Link to="/" style={{color:"#ffd500", textDecoration:"none"}} > <h1>LMS</h1></Link>
-      {/* <h5 className="d-block d-md-none" style={{marginLeft:"auto", marginRight:"20px", color:"#a0a0a0", textTransform:"uppercase"}} >{user_login && `${user_login.name.split(' ')[0][0]} ${user_login.name.split(' ')[1][0]}`}</h5>
-      <h5 className="d-none d-md-block" style={{marginLeft:"auto", marginRight:"20px", color:"#a0a0a0", textTransform:"uppercase"}} >{user_login && user_login.name}</h5> */}
+      <div className="d-flex justify-content-around align-items-center " >
+    <Link to="/" style={{color:"white", textDecoration:"none"}} ><img style={{margin:"5%"}} src={logo} height="35px" alt="logo" /></Link>
+       <Link to="/" style={{color:"#ffd500", textDecoration:"none"}} > <h1 style={{marginLeft:"10px", marginTop:"10px"}} >LMS</h1></Link>
+    </div>
       <div style={{marginRight:"20px", marginLeft:"auto"}}>
           {!user_login
            ? <SecondaryButton
@@ -118,7 +111,10 @@ const NavBar = () =>{
           >
               Login
           </SecondaryButton> 
-          : <AccountMenu name = {user_login.name[0]} title={user_login.name} />}
+          : <div className='d-flex'>
+            <p style={{marginTop:"15px"}} >{user_login.name.split(' ')[0]}</p>
+            <AccountMenu name = {user_login.name[0]} title={user_login.name} />
+          </div>}
       </div>
     </div>
       <div

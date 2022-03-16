@@ -37,7 +37,6 @@ function Verification() {
     else{
         navigate('/user/login')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
   return (

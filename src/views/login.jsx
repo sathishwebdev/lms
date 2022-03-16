@@ -73,11 +73,11 @@ export default function Login() {
   
     return (
       <div className="App">
-        <div className="header" style={{ borderRadius:"0 0 0 0", minHeight:"100vh"}}>
+        <div className="header" style={{ borderRadius:"0 0 0 0", minHeight:"100vh", backgroundColor:"transparent"}}>
            <div className="d-none d-sm-block walk-holder" >
               <img src={walk} alt="human" />
             </div>
-             <div className="col-12 col-sm-6 col-lg-4 pad " style={{ color:"white"}} >
+             <div className="col-12 col-sm-6 col-lg-4 pad " style={{ color:"gray"}} >
                   <div style={{ textAlign: "center" }}>
                   {error && <Message type="error" message={error}/>}
                 <CustomizedSnackbars />
