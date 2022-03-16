@@ -30,31 +30,36 @@ function LoanList() {
     let month = timestamp.getMonth()
     let year = timestamp.getFullYear()
 
-    let totalAmountInvested = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> acc + data.amount, 0) : null
+    let totalAmountCirculating = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> acc + data.amount, 0) : null
+
+    let totalAmountInvested = list ? list.data.reduce((acc, data)=> acc + data.amount, 0) : null
 
     let totalAmountReturned = list ? list.data.filter(data=> !data.status === "active").reduce((acc, data)=> acc + data.amount, 0) : null
 
     console.log(totalAmountInvested);
   return (
-    <div>
+    <>
         {error && <Message type="error" message={error} />}
         {success && <Message type="success" message="Successfully Fetched"/>}
         {loading ? <div className='loader' ></div> :
         
-        <div className="pad" >
-            <div className="d-flex">
-                <div style={{border:"1px solid black", padding:"15px", width:"fit-content", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
+        <div className="" style={{paddingBottom:"100px"}} >
+            <div className="pad row justify-content-around align-items-center">
+            <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
+                    <h2>Invested : &#8377; {totalAmountCirculating}</h2>
+                </div>
+                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
                     <h2>Circulating Now : &#8377; {totalAmountInvested}</h2>
                 </div>
-                <div style={{border:"1px solid black", padding:"15px", width:"fit-content", borderRadius:"25px", backgroundColor:"#ff7878",margin:"2%"}}>
+                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px",  borderRadius:"25px", backgroundColor:"#ff7878",margin:"2%"}}>
                     <h2>Returned Gross: &#8377; {totalAmountReturned}</h2>
                 </div>
-                <div style={{border:"1px solid black", padding:"15px", width:"fit-content", borderRadius:"25px", backgroundColor:"lightgreen",margin:"2%"}}>
+                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen",margin:"2%"}}>
                     <h2>Gross Gain : &#8377; {totalAmountReturned*0.02}</h2>
                 </div>
             </div>
             <div style={{overflowX:"auto", padding:"10px"}}>
-                <table>
+                <table style={{marginLeft:"auto", marginRight:"auto"}}>
                     <thead>
                         <tr>
                             <th rowSpan="2">LoanId</th>
@@ -71,7 +76,7 @@ function LoanList() {
                         </tr>
                         <tr>
                             <th>name</th>
-                            <th>weight</th>
+                            <th>weight (gm)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,7 +102,7 @@ function LoanList() {
         </div>
         
         }
-    </div>
+    </>
   )
 }
 

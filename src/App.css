@@ -107,8 +107,8 @@
   width:300px;
   background-color: rgb(255, 255, 255);
   font-family: "hussor-bold";
-  position: fixed;
-  z-index: 1;
+  position: static;
+  z-index: 2;
   transform : translateX(-100vw);
   transition: transform 5s ease-in-out;
 }
