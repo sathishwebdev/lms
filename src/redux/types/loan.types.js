@@ -27,11 +27,19 @@ const COUNT = {
     RESET : "LOAN_COUNT_RESET",
 }
 
+const ACTIVITY = {
+    REQUEST : "LOAN_ACTIVITY_REQUEST",
+    SUCCESS : "LOAN_ACTIVITY_SUCCESS",
+    ERROR : "LOAN_ACTIVITY_ERROR",
+    RESET : "LOAN_ACTIVITY_RESET",
+}
+
 
 
 export const LoanActionTypes = {
     ADD : CREATE,
     DETAILS : DETAILS,
     COUNT : COUNT,
-    LIST : LIST
+    LIST : LIST,
+    ACTIVITY : ACTIVITY
 }

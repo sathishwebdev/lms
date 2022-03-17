@@ -41,7 +41,7 @@ const loanListReducer = (state = { list: null }, action) => {
       return { loading: true };
 
     case LoanActionTypes.LIST.SUCCESS:
-      return { loading: false, list: action.payload };
+      return { loading: false, success : true, list: action.payload };
 
     case LoanActionTypes.LIST.ERROR:
       return { loading: false, error: action.payload};
@@ -53,11 +53,27 @@ const loanListReducer = (state = { list: null }, action) => {
       return state;
   }
 };
+
+const loanActivityReducer = (state = {response : null}, action) =>{
+  switch (action.type) {
+    case LoanActionTypes.ACTIVITY.REQUEST :
+      return {loading : true}
+    case LoanActionTypes.ACTIVITY.SUCCESS :
+      return {success : true, loading:false , response : action.payload}
+    case LoanActionTypes.ACTIVITY.ERROR:
+      return { loading: false, error: action.payload}
+    case LoanActionTypes.LIST.RESET:
+      return {response : null};
+    default:
+      return state;
+  }
+}
   
   const loanReducers = combineReducers({
       add : addLoanReducer,
       count : loanCountReducer,
-      list : loanListReducer
+      list : loanListReducer,
+      activity : loanActivityReducer
   })
 
   export default loanReducers

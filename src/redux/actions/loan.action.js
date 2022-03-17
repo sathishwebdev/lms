@@ -52,3 +52,26 @@ export const getLoanList = (userId) => async (dispatch, getState) =>{
         })
     }
 }
+
+export const addLoanActivity = (values, loanId) => async (dispatch, getState) => {
+    try{
+        dispatch({
+            type : LoanActionTypes.ACTIVITY.REQUEST
+        })
+
+        let {data} = await axios.post(`${BASE_URL}/add/activity/${loanId}`, values, getConfig(getState()))
+
+        dispatch({
+            type : LoanActionTypes.ACTIVITY.SUCCESS,
+            payload : data
+        })
+    }catch(error){
+        dispatch({
+            type : LoanActionTypes.ADD.ERROR,
+            payload : 
+                error.response && error.response.data.detail
+                    ? error.response.data.detail
+                    : error.message
+        })
+    }
+}
