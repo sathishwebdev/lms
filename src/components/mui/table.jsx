@@ -16,8 +16,13 @@ import { Tooltip } from '@mui/material';
 
 const thisMonth = new Date().getMonth()
 let today = new Date()
+
+
+
 function createData({name,loanId, status, amount, property, dateOfIssue, rateOfInterest}) {
     
+
+
 let dayOfIssue = dateOfIssue.split('/')[0]
 let monthOfIssue = dateOfIssue.split('/')[1]
 let yearOfIssue = dateOfIssue.split('/')[2]
@@ -27,34 +32,50 @@ var date2 = today;
   
 // To calculate the time difference of two dates
 var Difference_In_Time = date2.getTime() - date1.getTime();
-  
-// To calculate the no. of days between two dates
-var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-let ipm = amount * (rateOfInterest/100)
-let yearsofPay = Difference_In_Days/(365.25)
-let DiffinMnth = Difference_In_Days / 30.4375
-let numofyearstopay = +`${DiffinMnth}`.split('.')[0]/12
-let numOfMonths = +((DiffinMnth - (numofyearstopay*12) )).toFixed(2)
-let totalamount = (ipm*((numofyearstopay*12)))+amount % 10 ? (ipm*((numofyearstopay*12))+amount) : round(Math.round((ipm*((numofyearstopay*12))+amount)))
+var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); //D in Days
+let ipm = amount * (rateOfInterest/100) 
+let yearsofPay = Difference_In_Days/(365.25) 
+let DiffinMnth = Math.round(Difference_In_Days / 30.4375)
+let numofyearstopay = Math.round(+`${DiffinMnth}`.split('.')[0]/12)
+let numOfMonths = +(numofyearstopay*12).toFixed(2)
+let totalamount = ((ipm*((numofyearstopay*12)))+amount) % 10 === 0 ? (ipm*((numofyearstopay*12))+amount) : round(Math.round((ipm*((numofyearstopay*12))+amount)))
 
-if(numOfMonths < 0.5){
+if(numOfMonths < 0.5 && numofyearstopay < 1){
     console.log(numOfMonths)
-    numOfMonths = 1
-}else {
-    numOfMonths = numofyearstopay * 30.4375
+    numOfMonths = 1+DiffinMnth
+    totalamount = ((ipm*numOfMonths)+amount ) % 10 === 0 ? (ipm*numOfMonths)+amount : round(Math.round((ipm*numOfMonths)+amount))
+}else if(numOfMonths > 0 && numofyearstopay < 1){
+    console.log(loanId , numOfMonths)
+    numOfMonths = numOfMonths+DiffinMnth
+    totalamount = ((ipm*numOfMonths)+amount ) % 10 === 0 ? (ipm*numOfMonths)+amount : round(Math.round((ipm*numOfMonths)+amount))
 }
 
 // (ipm*(numOfMonths))+amount % 10 ? ((ipm*numOfMonths)+amount) : (round(Math.round((ipm*numOfMonths)+amount)))
 
 // (ipm*(numOfMonths+(numofyearstopay*12)))+amount % 10 ? (ipm*(numOfMonths+(numofyearstopay*12))+amount) : round(Math.round((ipm*(numOfMonths+(numofyearstopay*12))+amount)))
 
-function round(n)
-{
-    let a = parseInt(n / 10, 10) * 10;
-    let b = a + 10;
-    return b
-}
 
+console.table({
+    amount,
+    ipm ,
+    date1,
+    date2,
+    Difference_In_Days,
+    DiffinMnth,
+    yearsofPay,
+    numofyearstopay,
+    numOfMonths,
+    totalamount
+
+})
+// function round(n)
+// {
+//     let a = parseInt(n / 10, 10) * 10;
+//     let b = a + 10;
+//     return b
+// }
+
+const round = (x) => (Math.ceil(x/5)*5)
 
 const data = {
     loanId,
@@ -63,15 +84,14 @@ const data = {
     name, 
     propertyWeight : property ? property.weight : '',
     amount,
-    total : (amount * (rateOfInterest/100) * numOfMonths) + amount,
     history: [
     {
         ipm: amount * (rateOfInterest/100),
         date: dateOfIssue ,
         loanId,
         amount,
-        numOfMonths : numofyearstopay > 0 ? numofyearstopay*12 : numOfMonths,
-        interestAmount: ipm * (numofyearstopay*12),
+        numOfMonths ,
+        interestAmount: ipm * (numOfMonths),
         payedAmount : 0,
         total : totalamount
     }
@@ -86,11 +106,15 @@ const data = {
     ]
 };
 
+
 if(numofyearstopay >=1) {
     amount = amount*(numofyearstopay + ((rateOfInterest*12)/100))
     ipm = amount*(rateOfInterest/100)
     ipm = ipm > +`${ipm}`.split('.')[0] ? ipm+( 1 - +`0.${`${ipm}`.split('.')[1]}`): ipm
-    totalamount = (ipm*(numOfMonths))+amount % 10 ? ((ipm*numOfMonths)+amount) : (round(Math.round((ipm*numOfMonths)+amount)))
+    console.log(numOfMonths)
+    numOfMonths = numOfMonths === 0 ? 1 : Math.abs(numOfMonths - DiffinMnth)
+    numOfMonths = numOfMonths === 0 ? 1 : numOfMonths
+    totalamount = ((ipm*numOfMonths)+amount % 10) === 0 ? ((ipm*numOfMonths)+amount) : (round(Math.round((ipm*numOfMonths)+amount)))
     data.history.push({
         ipm,
         date: today.toLocaleDateString('en-IN'),
@@ -103,7 +127,6 @@ if(numofyearstopay >=1) {
     })
     
 }
-
 
 console.table({
     amount,

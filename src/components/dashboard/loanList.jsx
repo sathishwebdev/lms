@@ -35,7 +35,7 @@ function LoanList() {
 
     let totalAmountInvested = list ? list.data.reduce((acc, data)=> acc + data.amount, 0) : null
 
-    let totalAmountReturned = list ? list.data.filter(data=> !data.status === "active").reduce((acc, data)=> acc + data.amount, 0) : null
+  
 
   return (
     <>
@@ -50,12 +50,6 @@ function LoanList() {
                 </div>
                 <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
                     <h2>Circulating Now : &#8377; {totalAmountInvested}</h2>
-                </div>
-                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px",  borderRadius:"25px", backgroundColor:"#ff7878",margin:"2%"}}>
-                    <h2>Returned Gross: &#8377; {totalAmountReturned}</h2>
-                </div>
-                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen",margin:"2%"}}>
-                    <h2>Gross Gain : &#8377; {totalAmountReturned*0.02}</h2>
                 </div>
             </div>
             <div className='m-auto' style={{overflowX:"auto", padding:"10px", maxWidth:"800px"}}>
