@@ -11,15 +11,16 @@ import {Box,
     TableRow,
     Typography,
     Paper} from '@mui/material';
-import {KeyboardArrowDown, KeyboardArrowUp} from '@mui/icons-material';
+import {CalendarMonth, CurrencyExchange, KeyboardArrowDown, KeyboardArrowUp, LocalAtm, LocationOn, Money, PaidOutlined, Phone, PriceCheck, Receipt} from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
+import { Preview, print } from 'react-html2pdf';
 
 const thisMonth = new Date().getMonth()
 let today = new Date()
 
 
 
-function createData({name,loanId, status, amount, property, dateOfIssue, rateOfInterest}) {
+function createData({name,loanId, status, amount, property, dateOfIssue, rateOfInterest, address, gender, contact, surName}) {
     
 
 
@@ -103,13 +104,14 @@ const data = {
             quantity : property ? property.quantity : '',
             amount
         }
-    ]
+    ],
+   address, gender, contact, surName
 };
 
 
 if(numofyearstopay >=1) {
     amount = amount*(numofyearstopay + ((rateOfInterest*12)/100))
-    ipm = amount*(rateOfInterest/100)
+    ipm = round(amount*(rateOfInterest/100))
     ipm = ipm > +`${ipm}`.split('.')[0] ? ipm+( 1 - +`0.${`${ipm}`.split('.')[1]}`): ipm
     console.log(numOfMonths)
     numOfMonths = numOfMonths === 0 ? 1 : Math.abs(numOfMonths - DiffinMnth)
@@ -121,7 +123,7 @@ if(numofyearstopay >=1) {
         loanId,
         amount,
         numOfMonths,
-        interestAmount: (ipm),
+        interestAmount: (ipm*numOfMonths),
         payedAmount : 0,
         total : totalamount
     })
@@ -141,9 +143,9 @@ console.table({
     totalamount
 
 })
-console.log(data)
+console.log({...data, totalamount})
 
-    return data
+    return {...data, totalamount}
 }
 
    
@@ -152,7 +154,7 @@ console.log(data)
     const [open, setOpen] = React.useState(false);
 
     return (
-        <React.Fragment>
+        <>
         <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
             <TableCell align="right">
                 {row.loanId}
@@ -167,82 +169,122 @@ console.log(data)
             <TableCell align="center">{row.date}</TableCell>
             <TableCell align="center">{row.status}</TableCell>
             <TableCell >{row.name}</TableCell>
-            <TableCell align="center">{row.propertyWeight}</TableCell>
-            <TableCell align="center">{row.amount}</TableCell>
+            <TableCell align="right">{row.propertyWeight} g</TableCell>
+            <TableCell align="right">{row.amount}</TableCell>
         </TableRow>
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
-                    Property Details
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">Weight (g)</TableCell>
-                        <TableCell align="right">Quantityt</TableCell>
-                        <TableCell align="right">Amount</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {row.property.map((propertyRow, id) => (
-                        <TableRow key={id}>
-                        <TableCell component="th" scope="row">
-                            {propertyRow.name}
-                        </TableCell>
-                        <TableCell align="right">{propertyRow.weight}</TableCell>
-                        <TableCell align="right">{propertyRow.quantity}</TableCell>
-                        <TableCell align="right">{propertyRow.amount}</TableCell>
+                <Preview id={`invoice-${row.loanId}`} > 
+                <div style={{margin:"2%", padding:"2%"}}  >
+               
+                    <Typography variant="h6" gutterBottom component="div">
+                        Account Details - <span className={row.status === 'active' ? "bg-success" : "bg-danger"} style = {{width: "fit-content", padding:"2%", paddingBottom:"4px", paddingTop:"4px", borderRadius:"10px"}} >{row.status}</span>
+                    </Typography>
+                                   <div>
+                       <h2>{row.loanId} -  {row.name} </h2>
+                       <p> {row.surName} </p>
+                       <p><LocationOn/> {row.address} - 
+                       <a className='btn btn-info m-1' href={`tel:${row.contact}`} > <Phone/> {row.contact} </a></p>
+                                   </div>
+                    <Typography variant="h6" gutterBottom component="div">
+                        Property Details
+                    </Typography>
+                    <Table size="small" aria-label="purchases">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell>Name</TableCell>
+                            <TableCell align="right">Weight (g)</TableCell>
+                            <TableCell align="right">Quantityt</TableCell>
+                            <TableCell align="right">Amount</TableCell>
                         </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
-                <Typography variant="h6" gutterBottom component="div">
-                    History
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>LoanId</TableCell>
-                        <TableCell align="right">issued Amount</TableCell>
-                        <Tooltip  title='Interest per Month' ><TableCell align='right'>IPM</TableCell></Tooltip>
-                        <Tooltip title="Number of Months from issued month"><TableCell align='right'>No. of Months</TableCell></Tooltip>
-                        <Tooltip  title='Interest till Today' ><TableCell align='right'>Interest Amount</TableCell></Tooltip>
-                        <TableCell align="right">Payed Amount</TableCell>
-                        <TableCell align="right">Total Amount</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {row.history.map((historyRow) => (
-                        <TableRow key={historyRow.date}>
-                        <TableCell component="th" scope="row">
-                            {historyRow.date}
-                        </TableCell>
-                        <TableCell>{historyRow.loanId}</TableCell>
-                        <TableCell align="right">₹ {historyRow.amount}</TableCell>
-                        <TableCell align="right">{historyRow.ipm}</TableCell>
-                        <TableCell align="right">{historyRow.numOfMonths}</TableCell>
-                        <TableCell align="right">₹ {historyRow.interestAmount}</TableCell>
-                        <TableCell align="right">₹ {historyRow.payedAmount}</TableCell>
-                        <TableCell align="right">
-                           ₹ {historyRow.total}
-                        </TableCell>
+                        </TableHead>
+                        <TableBody>
+                        {row.property.map((propertyRow, id) => (
+                            <TableRow key={id}>
+                            <TableCell component="th" scope="row">
+                                {propertyRow.name}
+                            </TableCell>
+                            <TableCell align="right">{propertyRow.weight}</TableCell>
+                            <TableCell align="right">{propertyRow.quantity}</TableCell>
+                            <TableCell align="right">{propertyRow.amount}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                    <Typography variant="h6" gutterBottom component="div">
+                        Amount Details
+                    </Typography>
+                    <Table size="small" aria-label="purchases">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell>Date</TableCell>
+                            <TableCell>LoanId</TableCell>
+                            <TableCell align="right">issued Amount</TableCell>
+                            <Tooltip  title='Interest per Month' ><TableCell align='right'>IPM</TableCell></Tooltip>
+                            <Tooltip title="Number of Months from issued month"><TableCell align='right'>No. of Months</TableCell></Tooltip>
+                            <Tooltip  title='Interest till Today' ><TableCell align='right'>Interest Amount</TableCell></Tooltip>
+                            <TableCell align="right"> <PriceCheck/> Payed Amount</TableCell>
+                            <TableCell align="right"> <Money/> Total Amount</TableCell>
                         </TableRow>
-                    ))}
-                    </TableBody>
-                </Table>
+                        </TableHead>
+                        <TableBody>
+                        {row.history.map((historyRow) => (
+                            <TableRow key={historyRow.date}>
+                            <TableCell component="th" scope="row">
+                                {historyRow.date}
+                            </TableCell>
+                            <TableCell>{historyRow.loanId}</TableCell>
+                            <TableCell align="right">₹ {historyRow.amount}</TableCell>
+                            <TableCell align="right">{historyRow.ipm}</TableCell>
+                            <TableCell align="right">{historyRow.numOfMonths}</TableCell>
+                            <TableCell align="right">₹ {historyRow.interestAmount}</TableCell>
+                            <TableCell align="right">₹ {historyRow.payedAmount}</TableCell>
+                            <TableCell align="right">
+                               ₹ {historyRow.total}
+                            </TableCell>
+                            </TableRow>
+                        ))}
+                        <TableRow >
+                             <TableCell rowSpan="6" colSpan="3"></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan="3"><CalendarMonth/><b>Total No. Months</b></TableCell>
+                            <TableCell colSpan="2" align="right"><b>{row.history.reduce((acc, data)=> acc + data.numOfMonths, 0)}</b></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan="3"><CurrencyExchange/><b>Total Interest Amount</b></TableCell>
+                            <TableCell colSpan="2" align="right"><b> ₹ {row.history.reduce((acc, data)=> acc + data.interestAmount, 0)}</b></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan="3"> <PaidOutlined/> <b>Issued Amount</b></TableCell>
+                            <TableCell colSpan="2" align="right"><b>₹ {row.amount}</b></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan="3"><b> <PriceCheck/> Payed Amount</b></TableCell>
+                            <TableCell colSpan="2" align="right"><b>₹ {row.history.reduce((acc, data)=> acc + data.payedAmount, 0)}</b></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell colSpan="3"><h4> <Money/> <b>Total Amount</b></h4></TableCell>
+                            <TableCell colSpan="2" align="right"><h4><b>₹ {row.totalamount}</b></h4></TableCell>
+                        </TableRow>
+                        </TableBody>
+                    
+                    </Table>
+                    </div>
+                </Preview>
+               
                 <div className="pad text-right d-flex w-100 align-items-center justify-content-end"  >
-                    <button className="btn btn-dark" style={{margin:"3%"}} >Pay Interest</button>
-                    <button className="btn btn-warning" style={{margin:"3%"}} >Pay Full Amount</button>
+                    <button className="btn btn-dark" style={{margin:"3%"}} > <CurrencyExchange/> Pay Interest</button>
+                    <button className="btn btn-warning" style={{margin:"3%"}} ><LocalAtm/> Pay Full Amount</button>
+                    <button className="btn btn-info" onClick={()=>print(`${row.loanId}-${row.name}`, `invoice-${row.loanId}`)} style={{margin:"3%"}} ><Receipt/> Get Invoice </button>
                 </div>
                 </Box>
             </Collapse>
             </TableCell>
         </TableRow>
-        </React.Fragment>
+        </>
     );
     }
 

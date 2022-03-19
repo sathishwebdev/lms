@@ -52,7 +52,7 @@ function LoanList() {
                     <h2>Circulating Now : &#8377; {totalAmountInvested}</h2>
                 </div>
             </div>
-            <div className='m-auto' style={{overflowX:"auto", padding:"10px", maxWidth:"800px"}}>
+            <div className='m-auto' style={{overflowX:"auto", padding:"10px", maxWidth:"900px", margin:"3%"}}>
                 <ReactTable data={success ? list.data : []} />
             </div>
         </div>
