@@ -13,6 +13,7 @@ import ForgetPassword from './views/forgetPassword';
 import ChangePassword from './views/changePassword';
 import Dashboard from './views/dashboard';
 import AddLoan from './views/addLoan';
+import LoanDetails from './views/loanDetails';
 
 
 function App(props) {
@@ -34,6 +35,7 @@ function App(props) {
           <Route exact path="/" element={<Home {...props} />}/>
           <Route exact path="/user/dashboard" element ={<Dashboard />} />
           <Route exact path="/user/add/loan" element ={<AddLoan />} />
+          <Route exact path="/loan/detail/:loanId" element ={<LoanDetails />} />
           <Route exact path="/user/login" element ={<Login />} />
           <Route exact path="/user/signup" element ={<SignUp />} />
           <Route exact path="/user/verify" element={<Verify mailId={user_login ? user_login.email : ''} {...props} />}/>

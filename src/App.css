@@ -182,3 +182,22 @@ a:hover{
 small,p{
   color:#264636;
 }
+
+
+/* status styles start */
+
+.active-status{
+  padding: 6px 15px 6px 15px ;
+  border : 1px solid #02b35a;
+  color : #02b35a;
+  border-radius: 10px;
+}
+
+.closed-status{
+  padding: 5px;
+  border : 1px solid #e6343d;
+  color : #e6343d;
+  border-radius: 10px;
+}
+
+/* status styles end */

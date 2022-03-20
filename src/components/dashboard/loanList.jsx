@@ -1,3 +1,5 @@
+import { Add, ArrowDownward, ArrowUpward, CurrencyExchange, Paid, PriceCheck } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -33,9 +35,15 @@ function LoanList() {
 
     let totalAmountCirculating = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> acc + data.amount, 0) : null
 
+    let totalAmountReturned = list ? list.data.filter(data=>data.status === "closed").reduce((acc, data)=> acc + data.amount, 0) : null
+
+    let totalInterest = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> acc + data.activities.interestAmount, 0) : null
+
+    let totalProfit = list ? list.data.filter(data=>data.status !== "active").reduce((acc, data)=> acc + data.activities.interestAmount, 0) : null
+
     let totalAmountInvested = list ? list.data.reduce((acc, data)=> acc + data.amount, 0) : null
 
-  
+  console.table({totalAmountCirculating, totalAmountReturned, totalInterest})
 
   return (
     <>
@@ -44,15 +52,63 @@ function LoanList() {
         {loading ? <div className='loader' ></div> :
         
         <div className="" style={{paddingBottom:"100px"}} >
-            <div className="pad row justify-content-around align-items-center">
-            <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
-                    <h2>Invested : &#8377; {totalAmountCirculating}</h2>
+            <div className="pad row ">
+                <div className="pad col-12 col-lg" style={{border:"1px solid black", borderRadius:"25px", backgroundColor:"gold"}}>
+                    <div className="d-flex flex-wrap justify-content-around align-items-center">
+                        <div >
+                         <Paid style={{fontSize:"60px"}} />
+                         <h6>Invested</h6>
+                        </div>
+                        <div style={{width:"100%"}} >
+                         <span  style={{fontSize:"30px"}}> ₹ {totalAmountInvested}</span>
+                        </div>
+                    </div>
+                   
                 </div>
-                <div className="col-12 col-sm" style={{border:"1px solid black", padding:"15px", borderRadius:"25px", backgroundColor:"lightgreen", margin:"2%"}}>
-                    <h2>Circulating Now : &#8377; {totalAmountInvested}</h2>
+                
+                <div className="col-12 col-lg pad" style={{border:"1px solid black",  borderRadius:"25px", backgroundColor:"gold"}}>
+                  <div className="d-flex flex-wrap justify-content-around align-items-center">
+                      <div>
+                        <PriceCheck style={{fontSize:"60px"}}/>
+                        <h6>Profits</h6>
+                      </div>
+                     <div>
+                           <p style={{fontSize:"20px"}}>{(totalProfit/totalAmountReturned)*100}%  {(totalProfit/totalAmountReturned)*100 > 2 ? <ArrowUpward color="success"/> : <ArrowDownward color="error"/> }</p>
+                        {/* <Tooltip title="Return Investment">
+                           <p>/ ₹ {totalAmountReturned}</p> 
+                          </Tooltip>*/}
+                     </div>
+                     <div style={{width:"100%"}} > 
+                     <span style={{fontSize:"30px"}}>₹ {totalProfit}</span>
+                     </div>
+                  </div>
                 </div>
+
+                <div className="col-12 col-lg pad" style={{border:"1px solid black", borderRadius:"25px", backgroundColor:"gold"}}>
+                <div className="d-flex flex-wrap justify-content-around align-items-center">
+                      <div>
+                   <CurrencyExchange style={{fontSize:"60px"}}/> <h6> Circulating </h6>
+                   </div>
+                   <div style={{width:"100%"}} >
+                   <span style={{fontSize:"30px"}}> ₹ {totalAmountCirculating}</span>
+                    </div>
+                </div>
+                </div>
+
+                <div className="col-12 col-lg pad" style={{border:"1px solid black", borderRadius:"25px", backgroundColor:"gold"}}>
+                <div className="d-flex flex-wrap justify-content-around align-items-center">
+                      <div>
+                   <CurrencyExchange style={{fontSize:"60px"}}/> 
+                   <h6> Interest Amount</h6>
+                   </div>
+                   <div style={{width:"100%"}} >
+                   <span style={{fontSize:"30px"}} >₹ {totalInterest} <Add/></span>
+                   </div>
+                </div>
+                </div>
+
             </div>
-            <div className='m-auto' style={{overflowX:"auto", padding:"10px", maxWidth:"900px", margin:"3%"}}>
+            <div className='m-auto' style={{ padding:"10px", maxWidth:"1200px", margin:"3%"}}>
                 <ReactTable data={success ? list.data : []} />
             </div>
         </div>
