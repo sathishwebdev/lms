@@ -144,7 +144,9 @@ console.table({
     const [open, setOpen] = React.useState(false);
     let dispatch = useDispatch()
     useEffect(()=>{
-        dispatch(addLoanActivity(row, row.loanId))
+        if(row.status === 'active'){
+             dispatch(addLoanActivity(row, row.loanId))
+        }
         },[])
     return (
         <>
@@ -222,7 +224,6 @@ console.table({
                                 <Tooltip  title='Interest per Month' ><TableCell align='right'>IPM</TableCell></Tooltip>
                                 <Tooltip title="Number of Months from issued month"><TableCell align='right'>No. of Months</TableCell></Tooltip>
                                 <Tooltip  title='Interest till Today' ><TableCell align='right'>Interest Amount</TableCell></Tooltip>
-                                <TableCell align="right"> Payed Amount</TableCell>
                                 <TableCell align="right"> Total Amount</TableCell>
                             </TableRow>
                             </TableHead>
@@ -237,13 +238,12 @@ console.table({
                                 <TableCell align="right">{historyRow.ipm}</TableCell>
                                 <TableCell align="right">{historyRow.numOfMonths}</TableCell>
                                 <TableCell align="right">₹ {historyRow.interestAmount}</TableCell>
-                                <TableCell align="right">₹ {historyRow.payedAmount}</TableCell>
                                 <TableCell align="right">
                                    ₹ {historyRow.total}
                                 </TableCell>
                                 </TableRow>
                             ))}
-                            <TableRow >
+                            {/* <TableRow >
                                  <TableCell rowSpan="6" colSpan="3"></TableCell>
                             </TableRow>
                             <TableRow>
@@ -265,17 +265,17 @@ console.table({
                             <TableRow>
                                 <TableCell colSpan="3"><h4><b>Total Amount</b></h4></TableCell>
                                 <TableCell colSpan="2" align="right"><h4><b>₹ {row.totalamount}</b></h4></TableCell>
-                            </TableRow>
+                            </TableRow> */}
                             </TableBody>
                         
                         </Table>
-                        
-                    </div>
-                    </>
-                 <div className="pad text-right d-flex w-100 align-items-center justify-content-end"  >
+                        <div className="pad text-right d-flex w-100 align-items-center justify-content-end"  >
                     
                     <Link className="btn btn-dark" style={{margin:"3%"}} to={`/loan/detail/${row.loanId}`} > Take Action <DoubleArrowRounded/>  </Link>
                 </div>
+                    </div>
+                    </>
+                 
                 </Box>
             </Collapse>
             </TableCell>
