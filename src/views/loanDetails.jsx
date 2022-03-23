@@ -159,9 +159,9 @@ function LoanDetails() {
                         </TableContainer>
                  
                        { data.status === "active" && <div className="pad" >
-                        <button className='btn btn-dark m-1' >
+                        {/* <button className='btn btn-dark m-1' >
                             <CurrencyExchange /> Pay Interest
-                        </button>
+                        </button> */}
                         <button className='btn btn-warning m-1' onClick={handleClickOpen} >
                             <Paid/> Pay Full Amount
                         </button>
@@ -171,7 +171,7 @@ function LoanDetails() {
                </div> 
             </>
             <DialogBox open={open} close = {handleClose} title="Do you Want to Close the Account?" text={dialogText} action={handleDialogAction} />
-             {data.status !== " active" && <div>
+             {data.status !== "active" && <div>
                 <button className="btn btn-dark" onClick={()=>{window.print()}} style={{margin:"3%"}} ><Print/> Print </button>
                 </div>}
          </div> }

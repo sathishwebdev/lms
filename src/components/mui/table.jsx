@@ -103,7 +103,7 @@ const data = {
 };
 
 
-if(numofyearstopay >=1) {
+if(numofyearstopay >=1 ) {
     amount = amount*((numOfMonths * (rateOfInterest/100))+1)
     ipm = round(amount*(rateOfInterest/100))
     ipm = ipm > +`${ipm}`.split('.')[0] ? ipm+( 1 - +`0.${`${ipm}`.split('.')[1]}`): ipm
@@ -195,7 +195,7 @@ console.table({
                             <TableRow>
                                 <TableCell>Name</TableCell>
                                 <TableCell align="right">Weight (g)</TableCell>
-                                <TableCell align="right">Quantityt</TableCell>
+                                <TableCell align="right">Quantity</TableCell>
                                 <TableCell align="right">Amount</TableCell>
                             </TableRow>
                             </TableHead>
@@ -212,7 +212,7 @@ console.table({
                             ))}
                             </TableBody>
                         </Table>
-                        <Typography variant="h6" gutterBottom component="div">
+                        {/* <Typography variant="h6" gutterBottom component="div">
                             Amount Details
                         </Typography>
                         <Table size="small" aria-label="purchases">
@@ -243,7 +243,7 @@ console.table({
                                 </TableCell>
                                 </TableRow>
                             ))}
-                            {/* <TableRow >
+                            <TableRow >
                                  <TableCell rowSpan="6" colSpan="3"></TableCell>
                             </TableRow>
                             <TableRow>
@@ -265,10 +265,10 @@ console.table({
                             <TableRow>
                                 <TableCell colSpan="3"><h4><b>Total Amount</b></h4></TableCell>
                                 <TableCell colSpan="2" align="right"><h4><b>₹ {row.totalamount}</b></h4></TableCell>
-                            </TableRow> */}
+                            </TableRow> 
                             </TableBody>
                         
-                        </Table>
+                        </Table>*/}
                         <div className="pad text-right d-flex w-100 align-items-center justify-content-end"  >
                     
                     <Link className="btn btn-dark" style={{margin:"3%"}} to={`/loan/detail/${row.loanId}`} > Take Action <DoubleArrowRounded/>  </Link>

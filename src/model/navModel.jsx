@@ -4,8 +4,8 @@ const NavModel = [
         name : "Dashboard"
     },
     {
-        path : "/user/insights",
-        name: "Anlytics"
+        path : "/user/add/loan",
+        name: "Add Loan"
     },
     
 ]
