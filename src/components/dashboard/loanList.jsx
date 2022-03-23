@@ -37,9 +37,9 @@ function LoanList() {
 
     let totalAmountReturned = list ? list.data.filter(data=>data.status === "closed").reduce((acc, data)=> acc + data.amount, 0) : null
 
-    let totalInterest = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> acc + data.activities.interestAmount, 0) : null
+    let totalInterest = list ? list.data.filter(data=>data.status === "active").reduce((acc, data)=> data.activities ? acc + data.activities.interestAmount : acc + 0, 0) : null
 
-    let totalProfit = list ? list.data.filter(data=>data.status !== "active").reduce((acc, data)=> acc + data.activities.interestAmount, 0) : null
+    let totalProfit = list ? list.data.filter(data=>data.status !== "active").reduce((acc, data)=> data.activities? acc + data.activities.interestAmount : acc+0, 0) : null
 
     let totalAmountInvested = list ? list.data.reduce((acc, data)=> acc + data.amount, 0) : null
 
