@@ -26,12 +26,12 @@ function App(props) {
     <BrowserRouter>   
     {/* <div className="" >
       <NavBar />
-  </div> */}
+  </div> */} 
   <div className="d-flex" >
     <div className='relative-sm-left'><CollapesNav/></div>
   
-      <div style={{width:"100%"}}>
-        <Routes>
+      <div style={{width:"100%", height:"100vh", overflowY:"auto"}}>
+       <Routes>
           <Route exact path="/" element={<Home {...props} />}/>
           <Route exact path="/user/dashboard" element ={<Private><Dashboard /></Private>} />
           <Route exact path="/user/add/loan" element ={<Private><AddLoan /></Private>} />
@@ -45,7 +45,8 @@ function App(props) {
         
           <Route path="*" element={<div className="header" style={{minHeight:"100vh", borderRadius:"0 0 0 70vw", color:"white"}}><h1>404</h1></div>}/>
         </Routes>
-      </div></div>
+      </div>
+      </div>
     </BrowserRouter></>
   );
 }
