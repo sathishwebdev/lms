@@ -73,7 +73,7 @@ function LoanList() {
                         <h6>Profits</h6>
                       </div>
                      <div>
-                           <p style={{fontSize:"20px"}}>{(totalProfit/totalAmountReturned)*100}%  {(totalProfit/totalAmountReturned)*100 > 2 ? <ArrowUpward color="success"/> : <ArrowDownward color="error"/> }</p>
+                           <p style={{fontSize:"20px"}}>{((totalProfit/totalAmountReturned)*100).toFixed(2)}%  {(totalProfit/totalAmountReturned)*100 > 2 ? <ArrowUpward color="success"/> : <ArrowDownward color="error"/> }</p>
                         {/* <Tooltip title="Return Investment">
                            <p>/ ₹ {totalAmountReturned}</p> 
                           </Tooltip>*/}
